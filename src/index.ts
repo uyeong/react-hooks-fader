@@ -7,7 +7,6 @@ interface Duration {
 
 interface Options {
   initialShow?: boolean;
-  enter?: boolean;
   duration?: number | Duration;
   onEnter?: () => void;
   onEntered?: () => void;
@@ -18,7 +17,6 @@ interface Options {
 function useFader<T = HTMLElement>(options: Options = {}): [RefObject<T>, boolean, (show: boolean) => void] {
   // Initialize option values
   const initialShow = useMemo(() => options.initialShow ?? true, []);
-  const enter = useMemo(() => options.enter ?? true, []);
   const duration = useMemo(() => {
     return typeof options.duration === 'number'
       ? { show: options.duration, hide: options.duration }
@@ -42,8 +40,8 @@ function useFader<T = HTMLElement>(options: Options = {}): [RefObject<T>, boolea
   }, []);
   // Set basic styles and events for fadeIn/Out.
   useLayoutEffect(() => {
-    ref.current!.style.display = (enter && show) || (!enter && !show) ? 'none' : 'block';
-    ref.current!.style.opacity = (enter && show) || (!enter && !show) ? '0' : '1';
+    ref.current!.style.display = show ? 'block' : 'none';
+    ref.current!.style.opacity = show ? '1' : '0';
     ref.current!.addEventListener('transitionend', handleTransitionEnd);
     ref.current!.addEventListener('webkitTransitionEnd', handleTransitionEnd);
     return () => {
