@@ -12,7 +12,7 @@
     "build:js": "rollup -c",
     "build:cpf": "node copyfiles.js",
     "build": "concurrently -n js,cpf,tsc \"yarn build:js\" \"yarn build:cpf -w\" \"yarn tsc\"",
-    "tsc": "tsc -p tsconfig.json -d --allowJs --noEmit false --emitDeclarationOnly --declarationDir dist",
+    "tsc": "tsc -p tsconfig.json --skipLibCheck -d --allowJs --noEmit false --emitDeclarationOnly --declarationDir dist",
     "lint:pt": "prettier --write \"src/**/*.ts*\"",
     "lint:ts": "tslint -p tsconfig.json 'src/**/*.ts*'",
     "lint": "yarn lint:pt && yarn lint:ts --fix",
