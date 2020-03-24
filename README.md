@@ -4,14 +4,12 @@ React Hooks that fadeIn / Out elements - [DEMO(storybook)](https://uyeong.github
 
 ## Installation
 
-### npm
-
 ```bash
 npm install --save react-hooks-fader
 yarn add react-hooks-fader
 ```
 
-### Usage
+## Usage
 
 ```tsx
 import useFader from 'react-hooks-fader';
