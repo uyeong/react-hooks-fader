@@ -8,6 +8,18 @@
   "repository": "git@github.com:uyeong/react-hooks-fader.git",
   "author": "U-Yeong Ju <uyeong21c@gmail.com>",
   "license": "MIT",
+  "keywords": [
+    "react",
+    "hooks",
+    "react-hooks",
+    "fade",
+    "fadein",
+    "fadeout",
+    "show",
+    "hide",
+    "animation",
+    "typescript"
+  ],
   "scripts": {
     "build:js": "rollup -c",
     "build:cpf": "node copyfiles.js",
