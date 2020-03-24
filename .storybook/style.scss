@@ -1,0 +1,21 @@
+.demo-1 {
+  &__item {
+    width: 200px;
+    height: 100px;
+    background: #ebebeb;
+  }
+  &__item > div {
+    line-height: 100px;
+    background: #884236;
+    text-align: center;
+    color: #fff;
+  }
+  &__btn {
+    margin-top: 10px;
+    width: 200px;
+    padding: 10px 10px;
+    border: 0;
+    background: #66a894;
+    color: #fff;
+  }
+}
