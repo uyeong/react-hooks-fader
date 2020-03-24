@@ -1,4 +1,4 @@
-import { useState, useRef, useLayoutEffect, useMemo, useCallback, useEffect, RefObject } from 'react';
+import { useState, useRef, useLayoutEffect, useCallback, useEffect, RefObject } from 'react';
 
 interface Duration {
   show: number;
@@ -14,19 +14,15 @@ interface Options {
   onExited?: () => void;
 }
 
-function useFader<T = HTMLElement>(options: Options = {}): [RefObject<T>, boolean, (show: boolean) => void] {
-  // Initialize option values
-  const initialShow = useMemo(() => options.initialShow ?? true, []);
-  const duration = useMemo(() => {
-    return typeof options.duration === 'number'
-      ? { show: options.duration, hide: options.duration }
-      : options.duration ?? { show: 0.3, hide: 0.3 };
-  }, []);
-  const onEnter = useMemo(() => options.onEnter ?? (() => undefined), []);
-  const onEntered = useMemo(() => options.onEntered ?? (() => undefined), []);
-  const onExit = useMemo(() => options.onExit ?? (() => undefined), []);
-  const onExited = useMemo(() => options.onExited ?? (() => undefined), []);
-  // Create state and ref for fadeIn/Out.
+function useFader<T = HTMLElement>({
+  initialShow = true,
+  duration = { show: 0.3, hide: 0.3 },
+  onEnter = () => undefined,
+  onEntered = () => undefined,
+  onExit = () => undefined,
+  onExited = () => undefined,
+}: Options = {}): [RefObject<T>, boolean, (show: boolean) => void] {
+  duration = typeof duration === 'number' ? { show: duration, hide: duration } : duration;
   const [show, setShow] = useState<boolean>(initialShow);
   const ref = useRef<T & HTMLElement>(null);
   const timer = useRef(0);
@@ -38,7 +34,6 @@ function useFader<T = HTMLElement>(options: Options = {}): [RefObject<T>, boolea
       onExited();
     }
   }, []);
-  // Set basic styles and events for fadeIn/Out.
   useLayoutEffect(() => {
     ref.current!.style.display = show ? 'block' : 'none';
     ref.current!.style.opacity = show ? '1' : '0';
@@ -49,17 +44,17 @@ function useFader<T = HTMLElement>(options: Options = {}): [RefObject<T>, boolea
       ref.current!.removeEventListener('webkitTransitionEnd', handleTransitionEnd);
     };
   }, []);
-  // Processing fadeIn/Out when the show state change.
   useEffect(() => {
     clearTimeout(timer.current);
-    if (show) {
+    if (show && ref.current!.style.opacity === '0') {
       onEnter();
       ref.current!.style.display = 'block';
-      ref.current!.style.transition = `opacity ${duration.show}s linear`;
+      ref.current!.style.transition = `opacity ${(duration as Duration).show}s linear`;
       timer.current = setTimeout(() => (ref.current!.style.opacity = '1'), 0);
-    } else {
+    }
+    if (!show && ref.current!.style.opacity === '1') {
       onExit();
-      ref.current!.style.transition = `opacity ${duration.hide}s linear`;
+      ref.current!.style.transition = `opacity ${(duration as Duration).hide}s linear`;
       ref.current!.style.opacity = '0';
     }
   }, [show]);
